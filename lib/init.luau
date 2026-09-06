@@ -142,9 +142,9 @@ function ZeWorld.getProxyForInstance(instance: Folder): Types.Proxy
     if ZeWorld._proxies[instance] then
         return ZeWorld._proxies[instance]
     end
-
-    setPredictionMode(instance, Enum.PredictionMode.On)
     
+    print("Creating new proxy for instance: " .. instance:GetFullName())
+
     local janitor = Janitor.new()
     local metatable = {
         __index = function(_, key: string)
@@ -176,8 +176,21 @@ end
 function ZeWorld.initializeProxy()
     assert(not ZeWorld._initialized, "Already initialized.")
 
+    local dataFolder = ZeWorld._dataFolder :: Folder
     ZeWorld._initialized = true
-    ZeWorld.Data = ZeWorld.getProxyForInstance(ZeWorld._dataFolder :: Folder)
+    ZeWorld.Data = ZeWorld.getProxyForInstance(dataFolder)
+
+    setPredictionMode(dataFolder, Enum.PredictionMode.On)
+
+    local function onDescendantAdded(descendant: Instance)
+        ZeWorld.getProxyForInstance(descendant :: Folder)
+        setPredictionMode(descendant, Enum.PredictionMode.On)
+    end
+
+    dataFolder.DescendantAdded:Connect(onDescendantAdded)
+    for _, descendant in dataFolder:GetDescendants() do
+        onDescendantAdded(descendant)
+    end
 end
 
 function ZeWorld.initialize()
