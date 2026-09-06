@@ -65,10 +65,21 @@ function ZeWorld.getKey(instance: Folder, key: string): any
     return ZeWorld.getProxyForInstance(childFolder)
 end
 
-function ZeWorld.setKey(instance: Folder, key: string, value: Types.SupportedValue): nil
+function ZeWorld.setKey(instance: Folder, key: string, value: Types.SupportedValue?): nil
     Types.typeInstanceAssert(instance, "Folder")
     Types.typeAssert(key, "string")
     Types.typeAssertSupported(value)
+
+    if value == nil then
+        instance:SetAttribute(key, nil)
+        
+        local childFolder = getFirstChildOfClassAndName(instance, "Folder", key)
+        if childFolder then
+            childFolder:Destroy()
+        end
+
+        return nil
+    end
 
     if typeof(value) == "Instance" then
         local instanceId = value:GetAttribute("ZeWorldId")
