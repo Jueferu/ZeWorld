@@ -1,6 +1,9 @@
 {
-	"name": "ZeWorld",
+	"name": "Packages",
 	"tree": {
-		"$path": "lib"
+		"$path": "Packages",
+		"ZeWorld": {
+			"$path": "lib"
+		}
 	}
 }
