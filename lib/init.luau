@@ -20,7 +20,7 @@ const function getFirstChildOfClassAndName(parent: Instance, className: string, 
 end
 
 const function uuidRegexMatch(uuid: string): boolean
-    return string.match(uuid, "^[0-9a-fA-F]{8}%-[0-9a-fA-F]{4}%-[0-9a-fA-F]{4}%-[0-9a-fA-F]{4}%-[0-9a-fA-F]{12}$") ~= nil
+    return string.match(uuid, "^%x%x%x%x%x%x%x%x%-%x%x%x%x%-%x%x%x%x%-%x%x%x%x%-%x%x%x%x%x%x%x%x%x%x%x%x$") ~= nil
 end
 
 const function setPredictionMode(instance: Instance, mode: Enum.PredictionMode)
@@ -106,6 +106,24 @@ function ZeWorld.setKey(instance: Folder, key: string, value: Types.SupportedVal
     return nil
 end
 
+function ZeWorld.iter(instance: Folder)
+    local dictionary = {}
+
+	for key, _ in instance:GetAttributes() do
+		dictionary[key] = ZeWorld.getKey(instance, key)
+	end
+
+	for _, child in instance:GetChildren() do
+		if not (child:IsA("Folder")) then
+			continue
+		end
+
+		dictionary[child.Name] = ZeWorld.getKey(instance, child.Name)
+	end
+
+	return next, dictionary
+end
+
 function ZeWorld.getProxyForInstance(instance: Folder): Types.Proxy
     Types.typeInstanceAssert(instance, "Folder")
 
@@ -122,6 +140,9 @@ function ZeWorld.getProxyForInstance(instance: Folder): Types.Proxy
         end,
         __newindex = function(_, key, value)
             return ZeWorld.setKey(instance, key, value)
+        end,
+        __iter = function()
+            return ZeWorld.iter(instance)
         end
     }
 
