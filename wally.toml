@@ -7,4 +7,4 @@ realm = "shared"
 include = ["lib", "default.project.json", "LICENSE"]
 
 [dependencies]
-Janitor = "evaera/promise@^1.18"
+Janitor = "howmanysmall/janitor@^1.18"
