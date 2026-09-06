@@ -98,6 +98,8 @@ function ZeWorld.setKey(instance: Folder, key: string, value: Types.SupportedVal
         for childKey, childValue in value do
             proxy[childKey] = childValue
         end
+
+        return
     end
 
     instance:SetAttribute(key, value)
