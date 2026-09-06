@@ -2,7 +2,7 @@
 name = "jueferu/zeworld"
 description = "Data syncronization made easy"
 authors = ["@Jueferu <jb7177786@gmail.com>"]
-version = "0.1.1"
+version = "0.2.0"
 license = "MIT"
 registry = "https://github.com/Jueferu/wally-index"
 realm = "shared"
