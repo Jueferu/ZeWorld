@@ -6,7 +6,7 @@ export type UDimType = UDim2 | UDim
 export type RobloxClass = BrickColor | Color3 | CFrame | NumberRange | Rect | Font
 
 export type AttributeValue = PrimitiveType | SequenceType | VectorType | UDimType | RobloxClass
-export type SupportedValue = AttributeValue | Instance
+export type SupportedValue = AttributeValue | Instance | nil
 
 export type Proxy = typeof(setmetatable({}, {
     __index = function(_, key: string): any
@@ -37,6 +37,7 @@ Types.SupportedTypes = {
 	"Rect",
 	"Font",
 	"Instance",
+	"nil",
 }
 
 -- Functions
